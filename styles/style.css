@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+table.information{
+    margin: auto;
+    border: 1px solid black;
+    font-family: 'Staatliches', cursive;
+    font-size: 20px;
+}
+table.cards, table.buttons{
+    margin: auto;
+}
+#win{
+    background: springgreen;
+}
+#lose{
+    background: indianred;
+}
+#tie{
+    background: wheat;
+}
+input{
+    border-radius: 10px 10px 10px 10px;
+    margin-right: 1px;
+    width: 70px;
+    height: 35px;
+}
