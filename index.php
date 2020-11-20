@@ -19,7 +19,7 @@ if (!isset($_SESSION['dealer_deck'])) {
     $dealer->addCard($_SESSION['out']);
 }
 ?>
-<html lang="ru">
+<html lang="en">
 <head>
     <title>BlackJack</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -70,7 +70,7 @@ if (isset($_POST['hit']) and !$_SESSION['win']) {
         $_SESSION['status'] = 'dealer won';
         $_SESSION['win'] = 'dealer';
     }
-    while ($_SESSION['dealer_points'] <= 17) {
+    while ($_SESSION['dealer_points'] < 17) {
         $dealer->addCard($_SESSION['out']);
         header("Refresh: 0");
         if ($_SESSION['player_points'] == 21 and $_SESSION['dealer_points'] == 21) {
