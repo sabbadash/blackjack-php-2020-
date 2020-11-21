@@ -28,6 +28,7 @@ class Player
     function addCard($out){
         $isOut = true;
         while ($isOut) {
+            shuffle($this->list);
             $rand_card = ($dropped= array_rand($this->cards)) . $this->types[array_rand($this->types)];
             if (in_array($rand_card, $out)) {
                 continue;

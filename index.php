@@ -18,6 +18,7 @@ if (!isset($_SESSION['dealer_deck'])) {
     $player->addCard($_SESSION['out']);
     $dealer->addCard($_SESSION['out']);
 }
+
 ?>
 <html lang="en">
 <head>
@@ -36,9 +37,20 @@ if (@($_POST['hit'] or $_POST['stand']) and $_SESSION['win'] == true) {
     header("Refresh: 0");
 }
 
-if ($_SESSION['player_points'] == 21 and sizeof($_SESSION['dealer_deck']) == 1 and !$_SESSION['win']) {
-    $_SESSION['status'] = 'you won';
-    $_SESSION['win'] = true;
+if ($_SESSION['player_points'] == 21 and !$_SESSION['win']) {
+    while ($_SESSION['dealer_points'] < 17) {
+        $dealer->addCard($_SESSION['out']);
+        header("Refresh: 0");
+        if ($_SESSION['dealer_points'] == 21) {
+            $_SESSION['status'] = 'tie game';
+            $_SESSION['win'] = 'tie';
+            continue;
+        } elseif($_SESSION['dealer_points'] >= 17 or $_SESSION['dealer_points'] > 21) {
+            $_SESSION['status'] = 'you won';
+            $_SESSION['win'] = 'player';
+            continue;
+        }
+    }
 }
 
 if ($_SESSION['win'] == 'player') {
@@ -54,8 +66,19 @@ if (isset($_POST['hit']) and !$_SESSION['win']) {
     header("Refresh: 0");
 
     if ($_SESSION['player_points'] == 21) {
-        $_SESSION['status'] = 'you won';
-        $_SESSION['win'] = 'player';
+        while ($_SESSION['dealer_points'] < 17) {
+            $dealer->addCard($_SESSION['out']);
+            header("Refresh: 0");
+            if ($_SESSION['dealer_points'] == 21) {
+                $_SESSION['status'] = 'tie game';
+                $_SESSION['win'] = 'tie';
+                continue;
+            } elseif($_SESSION['dealer_points'] > 21 or $_SESSION['dealer_points'] < 21) {
+                $_SESSION['status'] = 'you won';
+                $_SESSION['win'] = 'player';
+                continue;
+            }
+        }
     }
     elseif ($_SESSION['player_points'] > 21) {
         $_SESSION['status'] = 'dealer won';
@@ -81,18 +104,16 @@ if (isset($_POST['hit']) and !$_SESSION['win']) {
             $_SESSION['status'] = 'tie game';
             $_SESSION['win'] = 'tie';
             continue;
-        } elseif($_SESSION['dealer_points'] > 21) {
+        } elseif ($_SESSION['dealer_points'] > 21 or $_SESSION['player_points'] > $_SESSION['dealer_points']) {
             $_SESSION['status'] = 'you won';
             $_SESSION['win'] = 'player';
             continue;
-        } elseif($_SESSION['player_points'] < $_SESSION['dealer_points'] or $_SESSION['dealer_points'] == 21) {
+        } elseif ($_SESSION['player_points'] < $_SESSION['dealer_points'] or $_SESSION['dealer_points'] == 21) {
             $_SESSION['status'] = 'dealer won';
             $_SESSION['win'] = 'dealer';
             continue;
         }
     }
-} else {
-    $_SESSION['status'] = 'in process..';
 }
 ?>
     </tr>
